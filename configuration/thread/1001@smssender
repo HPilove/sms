@@ -1,0 +1,39 @@
+ThreadName==SMSSender
+ClassName==org.sms.process.sms.SMSSender
+StartupType==2
+Parameter
+	BatchSize==10
+	Increase==2
+	src-address-range
+		addr-ton==1
+		addr-npi==1
+		address-range==1983
+	dest-address-range
+		addr-ton==1
+		addr-npi==1
+		address-range==2983
+	RejectTable
+	ip-address==10.10.8.214
+	port==9001
+	system-type
+	username==pavel
+	password==wpsd
+	sync-mode==a
+	enquire-interval==60
+	address-range
+		addr-ton==1
+		addr-npi==1
+		address-range==1983
+	LogDir==log/SMSSender
+	Alert
+	Debug
+	SingleSession
+	ThreadGroup
+	LogDefinition
+	DelayTime==5
+	NotificationInterval
+	NotificationString
+	ConnectDB==Y
+	ServiceCode==SMS
+Status==1
+Schedule

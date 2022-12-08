@@ -1,0 +1,38 @@
+# Global config
+EncryptAlgorithm==SHA
+AuthenticationCacheDuration==7200
+DateFormat==dd/MM/yyyy
+ReloadTime==30
+TimeZone
+	Offset==25200000
+	Description==Viet Nam/Ha Noi
+SystemProperties
+	mail.smtp.auth==true
+	com.telsoft.database.Database==1
+#Thread config
+ErrorLog==log/general/error.log
+ActionLog==log/general/action.log
+AlertLog==log/general/alert.log
+MaxLoggingSize==10000
+MaxConnectionAllowed==5
+# DB config
+DefaultDatabase==TELSOFT
+PortID==9009
+ConnectionPoolSize==10
+ConnectionPoolInitial==2
+Connection
+	TELSOFT
+		Url==jdbc:oracle:thin:@10.11.10.12:1521:app
+		Driver==oracle.jdbc.driver.OracleDriver
+		UserName==INS_OWNER
+		Password==ins
+		MaximumPoolSize==10
+		MinimumIdle==5
+		MaxLifetime==900000
+		IdleTimeout==300000
+		ConnectionTimeout==15000
+		Properties
+			cachePrepStmts==true
+			prepStmtCacheSize==256
+			prepStmtCacheSqlLimit==2048
+			useServerPrepStmts==true
