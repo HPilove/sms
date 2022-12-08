@@ -20,6 +20,7 @@ import smartlib.util.StringUtil;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.MessageFormat;
 import java.util.*;
 
 public class BaseSMSSender extends SMSThreadSender {
@@ -33,6 +34,7 @@ public class BaseSMSSender extends SMSThreadSender {
     @Getter
     @Setter
     private String priority = " AND NVL(priority,1) != 0 ";
+    private int batchSize = 1000;
 
     @SuppressWarnings({"rawtypes"})
     public Vector getParameterDefinition() {
@@ -107,6 +109,7 @@ public class BaseSMSSender extends SMSThreadSender {
                 }
                 if (System.currentTimeMillis() >= nextQuery) {
                     rs = DBUtil.query(qQueue, totalThread, threadNumber);
+                    mcnMain.setAutoCommit(false);
                     while (rs.next() && miThreadCommand != ThreadConstant.THREAD_STOP) {
                         try {
                             count++;
@@ -122,7 +125,6 @@ public class BaseSMSSender extends SMSThreadSender {
                             try {
                                 sendTextMessage(isdn, shortcode, content, id);
                                 DBUtil.crud(stmtDelete, id);
-                                logDebugMonitor("stmtDelete:::" + id);
                                 insertMTHistory(id, isdn, content, shortcode, create_time, priority, retry, program_id);
                             } catch (Exception e) {
                                 logMonitor(e.getMessage());
@@ -131,6 +133,10 @@ public class BaseSMSSender extends SMSThreadSender {
                         } catch (Exception ex) {
                             logMonitor(ex.getMessage());
                             throw ex;
+                        }
+                        if (count % batchSize == 0) {
+                            mcnMain.commit();
+                            logDebugMonitor("Commit {0} records", batchSize);
                         }
                     }
                     logMonitor("Total: " + count + " records:\r\n" +
@@ -143,8 +149,9 @@ public class BaseSMSSender extends SMSThreadSender {
             } catch (Exception ex) {
                 throw new AppException(ex, "submit");
             } finally {
-                Database.closeObject(rs);
+                mcnMain.commit();
                 mcnMain.setAutoCommit(true);
+                Database.closeObject(rs);
             }
         }
     }
@@ -238,6 +245,12 @@ public class BaseSMSSender extends SMSThreadSender {
     private void logDebugMonitor(String log) {
         if (StringUtil.nvl(getParameter("Debug"), "N").equals("Y")) {
             logMonitor(log);
+        }
+    }
+
+    private void logDebugMonitor(String log, Object... arguments) {
+        if (StringUtil.nvl(getParameter("Debug"), "N").equals("Y")) {
+            logMonitor(MessageFormat.format(log, arguments));
         }
     }
 }
