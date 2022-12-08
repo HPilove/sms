@@ -1,10 +1,10 @@
-ThreadName==SMSSender Priority
-ClassName==org.sms.process.sms.SMSSenderPriority
+ThreadName==SMSSender_1
+ClassName==org.sms.process.sms.SMSSender
 StartupType==2
 Parameter
 	sql_condition
-	BatchSize==999
-	Increase==2
+	ThreadCount==5
+	ThreadNumber==0
 	src-address-range
 		addr-ton==1
 		addr-npi==1
@@ -24,7 +24,7 @@ Parameter
 		addr-ton==1
 		addr-npi==1
 		address-range==1983
-	LogDir==log/SMSSender
+	LogDir==log/SMSSender1
 	Alert
 	Debug
 	SingleSession
@@ -34,6 +34,8 @@ Parameter
 	NotificationInterval
 	NotificationString
 	ConnectDB==Y
+	BatchSize==999
+	Increase==2
 	RejectTable
 	ServiceCode==SMS
 Status==1

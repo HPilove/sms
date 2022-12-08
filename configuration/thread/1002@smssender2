@@ -1,9 +1,10 @@
-ThreadName==SMSSender
+ThreadName==SMSSender_2
 ClassName==org.sms.process.sms.SMSSender
 StartupType==2
 Parameter
-	BatchSize==10
-	Increase==2
+	sql_condition
+	ThreadCount==5
+	ThreadNumber==1
 	src-address-range
 		addr-ton==1
 		addr-npi==1
@@ -12,7 +13,6 @@ Parameter
 		addr-ton==1
 		addr-npi==1
 		address-range==2983
-	RejectTable
 	ip-address==10.10.8.214
 	port==9001
 	system-type
@@ -24,16 +24,19 @@ Parameter
 		addr-ton==1
 		addr-npi==1
 		address-range==1983
-	LogDir==log/SMSSender
+	LogDir==log/SMSSender2
 	Alert
 	Debug
 	SingleSession
 	ThreadGroup
 	LogDefinition
-	DelayTime==5
+	DelayTime==1
 	NotificationInterval
 	NotificationString
 	ConnectDB==Y
+	BatchSize==999
+	Increase==2
+	RejectTable
 	ServiceCode==SMS
 Status==1
 Schedule
